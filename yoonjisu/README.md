@@ -15,6 +15,8 @@
 
 ### Express 기반 웹서버 구동
 
+> `app.listen('port', 콜백함수);`
+
 ```js
 // app.js
 var express = require('express');
@@ -23,13 +25,13 @@ var app = express();
 app.listen(3000, function () {
   console.log('start, express server on port 3000');
 });
-
-/* app.listen('port', 콜백함수); */
 ```
 
 <br>
 
 ### URL Routing 처리
+
+> `app.get('path', 콜백함수)`
 
 ```js
 // app.js
@@ -37,6 +39,15 @@ app.get('/', function (req, res) {
   res.send('<h1>hi friend!</h1>'); // 응답값
   res.sendFile(__dirname + 'public/main.html'); // get 요청 시 해당 파일을 클라이언트가 받게 됨
 });
+```
 
-/* app.get('path', 콜백함수) */
+<br>
+
+### static 디렉토리 설정
+
+> `app.use(express.static('static 디렉토리'))`
+
+```js
+// app.js
+app.use(express.static('public')); // public 하위의 파일들은 static으로 바로 내려받을 수 있음
 ```
