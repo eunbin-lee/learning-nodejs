@@ -68,3 +68,61 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.json()); // json 형태로 데이터가 올 때
 app.use(bodyParser.urlencoded({ extended: true })); // json 외의 형태로 데이터가 올 때
 ```
+
+<br>
+
+### View engine을 활용한 응답처리
+
+`npm install ejs --save`
+
+> **View Engine**<br>
+> 서버에서 처리한 데이터 결과값을 정적인 페이지(HTML 파일)에 보다 편리하게 출력해주기 위해 사용<br>
+> 뷰 엔진에서 요구하는 형태로 템플릿 파일(문서)을 만들고, 해당 템플릿 문서에 서버에서 처리한 데이터를 전달하면 해당 데이터를 화면에 출력 가능
+
+> **EJS**<br>
+> Embedded JavaScript templating의 약어<br>
+> 자바스크립트로 HTML 마크업을 생성할 수 있는 간단한 템플릿 언어
+
+> **템플릿 엔진**<br>
+> 템플릿 양식과 특정 데이터 모델에 따른 입력 자료를 합성하여 결과 문서를 출력하는 소프트웨어(또는 소프트웨어 컴포넌트)
+
+```js
+// app.js
+app.set('view engine', 'ejs'); // view engine은 ejs라고 설정
+```
+
+```js
+// views > email.ejs
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>email ejs template</title>
+  </head>
+
+  <body>
+    <h1>Welcome !! <%= email %></h1>
+    <p>정말로 반가워요 ^^</p>
+  </body>
+</html>
+```
+
+```js
+// app.js
+app.post('/email_post', function (req, res) {
+  res.render('email.ejs', { email: req.body.email }); // email.ejs에 email 키값의 req.body.email 값을 넘겨 해당 값을 치환 후 클라이언트에 응답해줌
+});
+```
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+#### 참고 자료
+
+[Express 안내서](https://expressjs.com/ko/guide/routing.html) <br>
+[[Template Engine] 템플릿 엔진(Template Engine)이란](https://gmlwjd9405.github.io/2018/12/21/template-engine.html) <br>
+[[스터디] EJS](https://velog.io/@mactto3487/%EC%8A%A4%ED%84%B0%EB%94%94-EJS) <br>
+[[NODE 강의] View Engine / 미들웨어 란?](https://ninjaggobugi.tistory.com/10)
