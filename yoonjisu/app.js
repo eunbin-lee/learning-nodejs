@@ -27,3 +27,10 @@ app.post('/email_post', function (req, res) {
   // res.send('<h1>welcome ! ' + req.body.email + '</h1>');
   res.render('email.ejs', { email: req.body.email });
 });
+
+app.post('/ajax_send_email', function (req, res) {
+  console.log(req.body.email);
+  // check validation about input value => select db
+  var responseData = { result: 'ok', email: req.body.email };
+  res.json(responseData);
+});

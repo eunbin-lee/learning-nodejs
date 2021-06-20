@@ -115,6 +115,56 @@ app.post('/email_post', function (req, res) {
 ```
 
 <br>
+
+### JSON을 활용한 Ajax 처리
+
+Ajax를 이용하여 브라우저의 새로고침 없이 서버에 데이터를 보내고 <br>
+서버에서는 데이터가 유효한지 확인한 후 클라이언트에 응답값을 전송한다
+
+```html
+<!-- form.html -->
+<body>
+  <button class="ajaxsend">ajaxsend</button>
+  <div class="result"></div>
+
+  <script>
+    document.querySelector('.ajaxsend').addEventListener('click', function () {
+      var inputdata = document.forms[0].elements[0].value;
+      sendAjax('http://localhost:3000/ajax_send_email', inputdata);
+    });
+
+    function sendAjax(url, data) {
+      var data = { email: data };
+      data = JSON.stringify(data); /* 1. 클라이언트의 form을 json 형태로 만듦 */
+      var xhr = new XMLHttpRequest();
+
+      xhr.open('POST', url); // 서버에서 app.post로 받기 때문에 POST로 전송
+      xhr.setRequestHeader('Content-Type', 'application/json'); // 서버로 보낼 때 json 형태로 보내기 때문에 콘텐트 타입을 application/json으로 설정
+      xhr.send(data); /* 2. send에 담아서 서버로 보냄 */
+
+      xhr.addEventListener('load', function () {
+        var result = JSON.parse(xhr.responseText);
+        if (result.result !== 'ok') return;
+        document.querySelector('.result').innerHTML = result.email;
+      });
+    }
+  </script>
+</body>
+```
+
+```js
+// app.js
+app.post('/ajax_send_email', function (req, res) {
+  /* 3. ''의 url을 라우팅 후 콜백함수 실행 */ console.log(req.body.email);
+  var responseData = { result: 'ok', email: req.body.email };
+  res.json(responseData); /* 4. 결과값을 담아서 클라이언트로 전송 */
+});
+```
+
+<br>
+<br>
+<br>
+<br>
 <br>
 <br>
 <br>
