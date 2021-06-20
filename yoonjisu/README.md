@@ -51,3 +51,20 @@ app.get('/', function (req, res) {
 // app.js
 app.use(express.static('public')); // public 하위의 파일들은 static으로 바로 내려받을 수 있음
 ```
+
+<br>
+<br>
+
+## Request, Response 처리 기본
+
+### POST 요청처리
+
+`npm install body-parser --save` : 클라이언트 POST request data의 body로부터 파라미터를 편리하게 추출해주는 모듈
+
+```js
+// app.js
+var bodyParser = require('body-parser');
+
+app.use(bodyParser.json()); // json 형태로 데이터가 올 때
+app.use(bodyParser.urlencoded({ extended: true })); // json 외의 형태로 데이터가 올 때
+```
