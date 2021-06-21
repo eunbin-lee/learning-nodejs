@@ -197,6 +197,33 @@ connection.connect();
 ```
 
 <br>
+
+### MySQL 연동 구현
+
+```js
+// app.js
+app.post('/ajax_send_email', function (req, res) {
+  var email = req.body.email;
+  var responseData = {};
+
+  var query = connection.query(
+    'select name from user where email="' + email + '"',
+    function (err, rows) {
+      if (err) throw err;
+      if (rows[0]) {
+        responseData.result = 'ok';
+        responseData.name = rows[0].name;
+      } else {
+        responseData.result = 'none';
+        responseData.name = '';
+      }
+      res.json(responseData); // 응답값을 콜백함수 안에 설정해야 비동기로 처리됨
+    },
+  );
+});
+```
+
+<br>
 <br>
 <br>
 <br>
