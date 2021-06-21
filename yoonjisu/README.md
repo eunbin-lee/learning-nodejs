@@ -163,6 +163,41 @@ app.post('/ajax_send_email', function (req, res) {
 
 <br>
 <br>
+
+## Database 연동 기본
+
+### MySQL 연동 설정
+
+> **데이터베이스에 테이블 생성 후 데이터 저장하는 방법**<br>
+>
+> 1. mysql> CREATE DATABASE jsman;<br>
+> 2. USE jsman;<br>
+> 3. CREATE TABLE user(id INT PRIMARY KEY AUTO_INCREMENT, email VARCHAR(20) NOT NULL, name VARCHAR(30) NOT NULL, pw VARCHAR(30) NOT NULL);<br>
+> 4. SHOW tables;<br>
+> 5. INSERT INTO user(email, name, pw) VALUES ('crong@naver.com', 'crong', 'asdf');
+> 6. SELECT \* FROM user;
+
+<br>
+
+`npm install mysql --save`
+
+```js
+// app.js
+var mysql = require('mysql');
+
+var connection = mysql.createConnection({
+  host: 'localhost',
+  port: 3306,
+  user: 'root',
+  password: 'asdf1234',
+  database: 'jsman',
+});
+
+connection.connect();
+```
+
+<br>
+<br>
 <br>
 <br>
 <br>
@@ -176,3 +211,4 @@ app.post('/ajax_send_email', function (req, res) {
 [[Template Engine] 템플릿 엔진(Template Engine)이란](https://gmlwjd9405.github.io/2018/12/21/template-engine.html) <br>
 [[스터디] EJS](https://velog.io/@mactto3487/%EC%8A%A4%ED%84%B0%EB%94%94-EJS) <br>
 [[NODE 강의] View Engine / 미들웨어 란?](https://ninjaggobugi.tistory.com/10)
+[Express MySQL 연동 가이드](https://expressjs.com/en/guide/database-integration.html#mysql)<br>
