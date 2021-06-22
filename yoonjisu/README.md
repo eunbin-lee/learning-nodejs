@@ -225,6 +225,34 @@ app.post('/ajax_send_email', function (req, res) {
 
 <br>
 <br>
+
+## Router 개선 - 모듈화
+
+### Routing 모듈화
+
+```js
+// router > main.js
+var express = require('express');
+var app = express();
+var router = express.Router();
+var path = require('path'); // 상대 경로 설정
+
+router.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname, '../public/main.html'));
+});
+
+module.exports = router;
+```
+
+```js
+// app.js
+var main = require('./router/main');
+
+app.use('/main', main); // 사용자가 '/main'으로 들어오면 main이라는 라우터로 가서 필요한 정보를 처리함
+```
+
+<br>
+<br>
 <br>
 <br>
 <br>
@@ -237,5 +265,5 @@ app.post('/ajax_send_email', function (req, res) {
 [Express 안내서](https://expressjs.com/ko/guide/routing.html) <br>
 [[Template Engine] 템플릿 엔진(Template Engine)이란](https://gmlwjd9405.github.io/2018/12/21/template-engine.html) <br>
 [[스터디] EJS](https://velog.io/@mactto3487/%EC%8A%A4%ED%84%B0%EB%94%94-EJS) <br>
-[[NODE 강의] View Engine / 미들웨어 란?](https://ninjaggobugi.tistory.com/10)
+[[NODE 강의] View Engine / 미들웨어 란?](https://ninjaggobugi.tistory.com/10)<br>
 [Express MySQL 연동 가이드](https://expressjs.com/en/guide/database-integration.html#mysql)<br>
