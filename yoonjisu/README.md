@@ -253,6 +253,39 @@ app.use('/main', main); // 사용자가 '/main'으로 들어오면 main이라는
 
 <br>
 <br>
+
+## DB에 데이터 추가
+
+### create user
+
+```js
+// router > join > index.js
+router.post('/', function (req, res) {
+  var body = req.body;
+  var email = body.email;
+  var name = body.name;
+  var passwd = body.password;
+
+  var query = connection.query(
+    'insert into user (email, name, pw) values ("' +
+      email +
+      '", "' +
+      name +
+      '", "' +
+      passwd +
+      '")',
+    function (err, rows) {
+      if (err) {
+        throw err;
+      }
+      console.log('ok db insert');
+    },
+  );
+});
+```
+
+<br>
+<br>
 <br>
 <br>
 <br>
