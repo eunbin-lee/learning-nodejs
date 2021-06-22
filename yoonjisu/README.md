@@ -265,20 +265,17 @@ router.post('/', function (req, res) {
   var email = body.email;
   var name = body.name;
   var passwd = body.password;
+  var sql = { email, name, pw: passwd };
 
   var query = connection.query(
-    'insert into user (email, name, pw) values ("' +
-      email +
-      '", "' +
-      name +
-      '", "' +
-      passwd +
-      '")',
+    'insert into user set ?',
+    sql,
     function (err, rows) {
       if (err) {
         throw err;
+      } else {
+        res.render('welcome.ejs', { name: name, id: rows.insertId });
       }
-      console.log('ok db insert');
     },
   );
 });
@@ -300,3 +297,4 @@ router.post('/', function (req, res) {
 [[스터디] EJS](https://velog.io/@mactto3487/%EC%8A%A4%ED%84%B0%EB%94%94-EJS) <br>
 [[NODE 강의] View Engine / 미들웨어 란?](https://ninjaggobugi.tistory.com/10)<br>
 [Express MySQL 연동 가이드](https://expressjs.com/en/guide/database-integration.html#mysql)<br>
+[MySQL Escaping query values](https://github.com/mysqljs/mysql#escaping-query-values)<br>
