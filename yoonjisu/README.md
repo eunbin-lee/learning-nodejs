@@ -352,6 +352,68 @@ router.post(
 ```
 
 <br>
+
+### local-strategy 콜백완성
+
+```js
+// router > join > index.js
+router.get('/', function (req, res) {
+  var msg;
+  var errMsg = req.flash('error');
+  if (errMsg) msg = errMsg;
+  res.render('join.ejs', { message: msg });
+});
+
+passport.use(
+  'local-join',
+  new LocalStrategy(
+    {
+      usernameField: 'email',
+      passwordField: 'password',
+      passReqToCallback: true,
+    },
+    function (req, email, password, done) {
+      var query = connection.query(
+        'select * from user where email=?',
+        [email],
+        function (err, rows) {
+          if (err) return done(err);
+
+          if (rows.length) {
+            console.log('existed user');
+            return done(null, false, { message: 'your email is already used' });
+          } else {
+            var sql = { email, pw: password };
+            var query = connection.query(
+              'insert into user set?',
+              sql,
+              function (err, rows) {
+                if (err) throw err;
+                return done(null, { email: email, id: rows.insertId });
+              },
+            );
+          }
+        },
+      );
+    },
+  ),
+);
+```
+
+```html
+<!-- views > join.ejs -->
+<body>
+  <h1>Join my website!</h1>
+  <section class="messages"><%= message %></section>
+  <form action="/join" method="post">
+    email : <input type="text" name="email" /> <br />
+    password : <input type="text" name="password" /> <br />
+    <input type="submit" />
+  </form>
+</body>
+```
+
+<br>
 <br>
 <br>
 <br>

@@ -18,8 +18,13 @@ var connection = mysql.createConnection({
 connection.connect();
 
 router.get('/', function (req, res) {
-  res.render('join.ejs');
+  var msg;
+  var errMsg = req.flash('error');
+  if (errMsg) msg = errMsg;
+  res.render('join.ejs', { message: msg });
 });
+
+// passport.serialize
 
 passport.use(
   'local-join',
@@ -30,7 +35,28 @@ passport.use(
       passReqToCallback: true,
     },
     function (req, email, password, done) {
-      console.log('local-join callback called');
+      var query = connection.query(
+        'select * from user where email=?',
+        [email],
+        function (err, rows) {
+          if (err) return done(err);
+
+          if (rows.length) {
+            console.log('existed user');
+            return done(null, false, { message: 'your email is already used' });
+          } else {
+            var sql = { email, pw: password };
+            var query = connection.query(
+              'insert into user set?',
+              sql,
+              function (err, rows) {
+                if (err) throw err;
+                return done(null, { email: email, id: rows.insertId });
+              },
+            );
+          }
+        },
+      );
     },
   ),
 );
