@@ -336,6 +336,22 @@ passport.use(
 ```
 
 <br>
+
+### passport 기반 router 설정
+
+```js
+// router > join > index.js
+router.post(
+  '/',
+  passport.authenticate('local-join', {
+    successRedirect: '/main', // 회원가입 성공 시
+    failureRedirect: '/join', // 회원가입 실패 시
+    failureFlash: true,
+  }),
+);
+```
+
+<br>
 <br>
 <br>
 <br>
@@ -354,3 +370,4 @@ passport.use(
 [MySQL Escaping query values](https://github.com/mysqljs/mysql#escaping-query-values)<br>
 [Github passport-local](https://github.com/jaredhanson/passport-local)<br>
 [Github express session](https://github.com/expressjs/session)<br>
+[Passport Documentation](https://www.passportjs.org/docs/)

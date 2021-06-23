@@ -35,6 +35,15 @@ passport.use(
   ),
 );
 
+router.post(
+  '/',
+  passport.authenticate('local-join', {
+    successRedirect: '/main',
+    failureRedirect: '/join',
+    failureFlash: true,
+  }),
+);
+
 // router.post('/', function (req, res) {
 //   var body = req.body;
 //   var email = body.email;
