@@ -11,7 +11,7 @@ var connection = mysql.createConnection({
   host: 'localhost',
   port: 3306,
   user: 'root',
-  password: 'asdf1234',
+  password: 'adsf1234',
   database: 'jsman',
 });
 
@@ -25,6 +25,15 @@ router.get('/', function (req, res) {
 });
 
 // passport.serialize
+passport.serializeUser(function (user, done) {
+  console.log('passport session save : ', user.id);
+  done(null, user.id);
+});
+
+passport.deserializeUser(function (id, done) {
+  console.log('passport session get id : ', id);
+  done(null, id);
+});
 
 passport.use(
   'local-join',
@@ -45,9 +54,9 @@ passport.use(
             console.log('existed user');
             return done(null, false, { message: 'your email is already used' });
           } else {
-            var sql = { email, pw: password };
+            var sql = { email: email, pw: password };
             var query = connection.query(
-              'insert into user set?',
+              'insert into user set ?',
               sql,
               function (err, rows) {
                 if (err) throw err;

@@ -341,9 +341,11 @@ passport.use(
 
 ```js
 // router > join > index.js
+
 router.post(
   '/',
   passport.authenticate('local-join', {
+    // done()에 따라 어떻게 처리할건지 설정
     successRedirect: '/main', // 회원가입 성공 시
     failureRedirect: '/join', // 회원가입 실패 시
     failureFlash: true,
@@ -353,7 +355,7 @@ router.post(
 
 <br>
 
-### local-strategy 콜백완성
+### local-strategy 콜백 완성
 
 ```js
 // router > join > index.js
@@ -380,7 +382,7 @@ passport.use(
           if (err) return done(err);
 
           if (rows.length) {
-            console.log('existed user');
+            // 이미 존재하는 user일 경우
             return done(null, false, { message: 'your email is already used' });
           } else {
             var sql = { email, pw: password };
@@ -389,6 +391,7 @@ passport.use(
               sql,
               function (err, rows) {
                 if (err) throw err;
+                // 회원가입이 성공했을 경우
                 return done(null, { email: email, id: rows.insertId });
               },
             );
@@ -411,6 +414,21 @@ passport.use(
     <input type="submit" />
   </form>
 </body>
+```
+
+<br>
+
+### passport 기반 세션 처리
+
+```js
+// router > join > index.js
+passport.serializeUser(function (user, done) {
+  done(null, user.id); // 리다이렉트 후 세션 처리가 성공하면 시리얼라이즈로 user id 저장
+});
+
+passport.deserializeUser(function (id, done) {
+  done(null, id); // 저장된 이후 모든 페이지에서 디시리얼라이즈를 거쳐 세션에서 user id를 가져와 각 페이지에 전달
+});
 ```
 
 <br>
