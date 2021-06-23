@@ -16,7 +16,7 @@ var connection = mysql.createConnection({
 connection.connect();
 
 router.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname, '../../public/join.html'));
+  res.render('join.ejs');
 });
 
 router.post('/', function (req, res) {

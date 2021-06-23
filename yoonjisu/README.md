@@ -283,6 +283,27 @@ router.post('/', function (req, res) {
 
 <br>
 <br>
+
+## 패스포트 기반 인증 로직 구현 (회원가입, 로그인, 로그아웃)
+
+### passport 환경구축
+
+`npm install passport passport-local express-session connect-flash --save-dev`
+
+> **passport** : 인증 관련 모듈<br> **passport-local** : 소셜 로그인이 아닌 일반적인 로컬 로그인을 처리할 때 사용하는 모듈<br> **express-session** : 세션 관련 처리할 때 사용하는 모듈<br> **connect-flash** : 에러와 같은 메세지를 리다이렉트하는 과정에서 쉽게 전달될 수 있도록 해주는 모듈
+
+<br>
+
+```js
+// app.js
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var session = require('express-session');
+var flash = require('connect-flash');
+```
+
+<br>
+<br>
 <br>
 <br>
 <br>
@@ -298,3 +319,4 @@ router.post('/', function (req, res) {
 [[NODE 강의] View Engine / 미들웨어 란?](https://ninjaggobugi.tistory.com/10)<br>
 [Express MySQL 연동 가이드](https://expressjs.com/en/guide/database-integration.html#mysql)<br>
 [MySQL Escaping query values](https://github.com/mysqljs/mysql#escaping-query-values)<br>
+[Github passport-local](https://github.com/jaredhanson/passport-local)<br>
