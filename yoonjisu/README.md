@@ -286,7 +286,7 @@ router.post('/', function (req, res) {
 
 ## 패스포트 기반 인증 로직 구현 (회원가입, 로그인, 로그아웃)
 
-### passport 환경구축
+### passport 환경 구축
 
 `npm install passport passport-local express-session connect-flash --save-dev`
 
@@ -294,12 +294,45 @@ router.post('/', function (req, res) {
 
 <br>
 
+### middleware, strategy 설정
+
 ```js
 // app.js
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var session = require('express-session');
 var flash = require('connect-flash');
+
+app.use(
+  session({
+    secret: 'keyboard cat', // 세션을 암호화하기 위한 키값
+    resave: false,
+    saveUninitialized: true,
+  }),
+);
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
+```
+
+```js
+// router > join > index.js
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+
+passport.use(
+  'local-join',
+  new LocalStrategy(
+    {
+      usernameField: 'email',
+      passwordField: 'password',
+      passReqToCallback: true,
+    },
+    function (req, email, password, done) {
+      console.log('local-join callback called');
+    },
+  ),
+);
 ```
 
 <br>
@@ -320,3 +353,4 @@ var flash = require('connect-flash');
 [Express MySQL 연동 가이드](https://expressjs.com/en/guide/database-integration.html#mysql)<br>
 [MySQL Escaping query values](https://github.com/mysqljs/mysql#escaping-query-values)<br>
 [Github passport-local](https://github.com/jaredhanson/passport-local)<br>
+[Github express session](https://github.com/expressjs/session)<br>
