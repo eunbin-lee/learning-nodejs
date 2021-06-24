@@ -455,6 +455,24 @@ router.post('/', function (req, res, next) {
 ```
 
 <br>
+
+### 로그아웃 처리
+
+```js
+// router > logout > index.js
+var express = require('express');
+var app = express();
+var router = express.Router();
+
+router.get('/', function (req, res) {
+  req.logout();
+  res.redirect('/login');
+});
+
+module.exports = router;
+```
+
+<br>
 <br>
 <br>
 <br>

@@ -11,14 +11,15 @@
       password : <input type="password" name="password" /><br />
     </form>
 
-    <button class="ajaxsend">login</button>
+    <button class="sendbtn">login</button>
 
     <div class="result"></div>
 
     <script>
       document
-        .querySelector('.ajaxsend')
-        .addEventListener('click', function () {
+        .querySelector('.sendbtn')
+        .addEventListener('click', function (e) {
+          e.preventDefault();
           var email = document.getElementsByName('email')[0].value;
           var password = document.getElementsByName('password')[0].value;
           sendAjax('http://localhost:3000/login', {
@@ -40,7 +41,11 @@
           var resultDiv = document.querySelector('.result');
 
           if (result.email) {
-            resultDiv.innerHTML = 'welcome, ' + result.email + '!!';
+            // resultDiv.innerHTML = 'welcome, ' + result.email + '!!';
+            window.location.gref = '/main';
+          } else if (xhr.status === 401) {
+            resultDiv.innerHTML =
+              result + "<div class='signup'><a href='/join'>Sign up></a></div>";
           } else {
             resultDiv.innerHTML = result;
           }
