@@ -21,7 +21,7 @@
         .addEventListener('click', function () {
           var email = document.getElementsByName('email')[0].value;
           var password = document.getElementsByName('password')[0].value;
-          sendAjax('http://localhost:3000/email/ajax', {
+          sendAjax('http://localhost:3000/login', {
             email: email,
             password: password,
           });
@@ -39,10 +39,10 @@
           var result = JSON.parse(xhr.responseText);
           var resultDiv = document.querySelector('.result');
 
-          if (result.result !== 'ok') {
-            resultDiv.innerHTML = 'your email is not found';
+          if (result.email) {
+            resultDiv.innerHTML = 'welcome, ' + result.email + '!!';
           } else {
-            resultDiv.innerHTML = result.name;
+            resultDiv.innerHTML = result;
           }
         });
       }

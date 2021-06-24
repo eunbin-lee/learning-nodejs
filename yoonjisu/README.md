@@ -432,6 +432,29 @@ passport.deserializeUser(function (id, done) {
 ```
 
 <br>
+
+### Ajax 기반의 passport 인증 처리
+
+```js
+// router > login > index.js
+router.post('/', function (req, res, next) {
+  passport.authenticate('local-login', function (err, user, info) {
+    if (err) res.status(500).json(err);
+    if (!user) {
+      return res.status(401).json(info.message);
+    }
+
+    req.logIn(user, function (err) {
+      if (err) {
+        return next(err);
+      }
+      return res.json(user);
+    });
+  })(req, res, next);
+});
+```
+
+<br>
 <br>
 <br>
 <br>
